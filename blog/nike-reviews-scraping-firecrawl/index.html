@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraping Nike Reviews with Firecrawl | StatExpert</title>
+    <meta name="description" content="A step-by-step e-commerce web scraping case study. Learn how to bypass anti-bot protections, handle dynamic rendering, and analyze Nike customer reviews using Python, Firecrawl, and NLP.">
+    <meta name="keywords" content="web scraping, e-commerce scraping, Amazon anti-bot, Firecrawl tutorial, Python scraper, Nike review analysis, NLP customer reviews, statistics tutoring, finish my statistics class">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Using Firecrawl to Scrape Nike Product Reviews: Lessons from a Failed Amazon Attempt">
+    <meta property="og:description" content="A step-by-step e-commerce scraping case study. Bypass anti-bot protections and analyze Nike reviews using Python, Firecrawl, and NLP.">
+    <meta property="og:image" content="https://finishmystatisticsclass.com/images/og-image.jpg">
+    <meta property="og:url" content="https://finishmystatisticsclass.com/blog/nike-reviews-scraping-firecrawl/">
+    <meta property="og:type" content="article">
+
+    <link rel="canonical" href="https://finishmystatisticsclass.com/blog/nike-reviews-scraping-firecrawl/">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <!-- Structured Data (Article Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://finishmystatisticsclass.com/blog/nike-reviews-scraping-firecrawl/"
+      },
+      "headline": "Using Firecrawl to Scrape Nike Product Reviews: Lessons from a Failed Amazon Attempt",
+      "description": "Discover how to bypass anti-bot protections and scrape 150 customer reviews from Nike using Python and Firecrawl, followed by basic NLP and sentiment analysis.",
+      "image": "https://finishmystatisticsclass.com/images/og-image.jpg",  
+      "author": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors"
+      },  
+      "publisher": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://finishmystatisticsclass.com/logo.png"
+        },
+        "sameAs": [
+          "https://www.tiktok.com/@finishmystatisticsclass",
+          "https://www.instagram.com/finishmystatisticsclass/"
+        ]
+      },
+      "datePublished": "2026-05-27"
+    }
+    </script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../favicon.png">
+    <link rel="apple-touch-icon" href="../../favicon.png"></head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar glass">
+        <div class="container nav-content">
+            <a href="../../" class="brand"><img src="../../assets/images/logo.jpg" alt="StatExpert Logo" class="brand-logo"><span>Stat</span>Expert</a>
+            <nav class="nav-links" id="nav-links">
+                <a href="../../#services">Services</a>
+                <a href="../../#how-it-works">How It Works</a>
+                <a href="../../#blog">Articles</a>
+                <a href="../../#contact" class="btn btn-secondary">Get Help</a>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Article Header -->
+        <article class="container pd-y-lg mg-t-lg">
+            <div class="article-header text-center">
+                <span class="blog-category" style="background: rgba(14, 165, 233, 0.1); color: var(--accent-color); padding: 0.25rem 0.75rem; border-radius: 50px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px;">CODING & CASE STUDIES</span>
+                <h1 style="font-size: clamp(2rem, 4vw, 3rem); margin-top: 1rem; color: var(--primary-color); font-weight: 800; line-height: 1.25;">Using Firecrawl to Scrape Nike Product Reviews: Lessons from a Failed Amazon Attempt</h1>
+                <div class="article-meta" style="margin-top: 1rem; color: var(--text-muted);">
+                    Published on May 27, 2026 • 6 min read
+                </div>
+                <div class="blog-img placeholder-bg1" style="border-radius: var(--radius-md); margin-top: 2rem; margin-bottom: 2rem; height: 350px;"></div>
+            </div>
+
+            <div class="article-content" style="max-width: 800px; margin: 0 auto; line-height: 1.8; color: var(--text-primary);">
+                
+                <p>A few weeks ago, I worked on a small product insight project that required collecting SKU-level customer review data from e-commerce websites. Initially, I attempted to scrape product reviews from Amazon, but quickly discovered how difficult modern e-commerce scraping has become. My scraper either returned incomplete data or empty responses due to anti-bot protections and dynamic page rendering.</p>
+
+                <p>Instead of abandoning the project, I switched to Nike and used Firecrawl to collect review data successfully.</p>
+
+                <div class="callout" style="background: rgba(14, 165, 233, 0.05); border-left: 4px solid var(--accent-color); padding: 1.5rem; margin: 2rem 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+                    <strong>Having trouble debugging your scraping scripts or analyzing custom datasets?</strong> 
+                    <br>Our experienced statistics and programming tutors can handle the web scraping, data cleaning, and statistical reporting for your university classes, thesis, or portfolio projects.
+                    <br><a href="../../#contact" style="color: var(--accent-color); font-weight: 600; text-decoration: underline;">Get a free quote today!</a>
+                </div>
+
+                <h2>The Scraped Product & The Firecrawl Solution</h2>
+                <p>The target product was the <strong>Nike Air Max 95 Big Bubble Leather</strong> men’s shoe with the style code <strong>IM0696-200</strong>. Using Python and Firecrawl, I scraped 150 customer reviews directly from Nike’s public review pages. The scraper collected review titles, star ratings, review text, and dates while respecting rate limits by pausing between requests.</p>
+                
+                <p>One thing I appreciated about Firecrawl was its ability to handle JavaScript-heavy pages much more effectively than traditional scraping approaches. Instead of manually fighting with dynamic rendering issues, the tool returned cleaner and more structured content that was easier to process for analysis.</p>
+
+                <h2>The Scraping Code</h2>
+                <p>Below is the clean and reproducible Python script using the Firecrawl REST API to navigate the page, trigger dynamic loading actions, and extract structured review data directly in a clean JSON format.</p>
+
+                <pre style="background: #0f172a; color: #f8fafc; padding: 1.5rem; border-radius: 12px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 0.9rem; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.05); box-shadow: var(--shadow-md);">
+<span style="color: #64748b;"># scrape_nike_reviews.py</span>
+<span style="color: #f43f5e;">import</span> requests
+<span style="color: #f43f5e;">import</span> json
+<span style="color: #f43f5e;">import</span> time
+
+API_URL = <span style="color: #10b981;">"https://api.firecrawl.dev/v1/scrape"</span>
+HEADERS = {
+    <span style="color: #10b981;">"Authorization"</span>: <span style="color: #10b981;">"Bearer YOUR_FIRECRAWL_API_KEY"</span>,
+    <span style="color: #10b981;">"Content-Type"</span>: <span style="color: #10b981;">"application/json"</span>
+}
+
+target_url = <span style="color: #10b981;">"https://www.nike.com/t/air-max-95-big-bubble-leather-mens-shoes-2xNsHz6W/reviews"</span>
+
+<span style="color: #64748b;"># Set up extraction schema for review fields</span>
+scrape_params = {
+    <span style="color: #10b981;">"url"</span>: target_url,
+    <span style="color: #10b981;">"formats"</span>: [<span style="color: #10b981;">"json"</span>],
+    <span style="color: #10b981;">"jsonOptions"</span>: {
+        <span style="color: #10b981;">"prompt"</span>: <span style="color: #10b981;">"Extract all visible customer reviews. Get the title, star rating, author, date, and review text content."</span>,
+        <span style="color: #10b981;">"schema"</span>: {
+            <span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"object"</span>,
+            <span style="color: #10b981;">"properties"</span>: {
+                <span style="color: #10b981;">"reviews"</span>: {
+                    <span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"array"</span>,
+                    <span style="color: #10b981;">"items"</span>: {
+                        <span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"object"</span>,
+                        <span style="color: #10b981;">"properties"</span>: {
+                            <span style="color: #10b981;">"title"</span>: {<span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"string"</span>},
+                            <span style="color: #10b981;">"rating"</span>: {<span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"integer"</span>},
+                            <span style="color: #10b981;">"content"</span>: {<span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"string"</span>},
+                            <span style="color: #10b981;">"author"</span>: {<span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"string"</span>},
+                            <span style="color: #10b981;">"date"</span>: {<span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"string"</span>}
+                        },
+                        <span style="color: #10b981;">"required"</span>: [<span style="color: #10b981;">"title"</span>, <span style="color: #10b981;">"rating"</span>, <span style="color: #10b981;">"content"</span>]
+                    }
+                }
+            },
+            <span style="color: #10b981;">"required"</span>: [<span style="color: #10b981;">"reviews"</span>]
+        }
+    },
+    <span style="color: #64748b;"># Pagination/Scrolling actions to load all reviews before extracting</span>
+    <span style="color: #10b981;">"actions"</span>: [
+        {<span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"scroll"</span>, <span style="color: #10b981;">"direction"</span>: <span style="color: #10b981;">"down"</span>},
+        {<span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"wait"</span>, <span style="color: #10b981;">"milliseconds"</span>: 2000},
+        {<span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"click"</span>, <span style="color: #10b981;">"selector"</span>: <span style="color: #10b981;">"button[aria-label='Go to next reviews']"</span>},
+        {<span style="color: #10b981;">"type"</span>: <span style="color: #10b981;">"wait"</span>, <span style="color: #10b981;">"milliseconds"</span>: 2000}
+    ]
+}
+
+print(<span style="color: #10b981;">"Sending scrape request..."</span>)
+res = requests.post(API_URL, json=scrape_params, headers=HEADERS)
+
+<span style="color: #f43f5e;">if</span> res.status_code == 200:
+    reviews_json = res.json().get(<span style="color: #10b981;">"data"</span>, {}).get(<span style="color: #10b981;">"json"</span>, {})
+    <span style="color: #f43f5e;">with</span> open(<span style="color: #10b981;">"nike_reviews.json"</span>, <span style="color: #10b981;">"w"</span>) <span style="color: #f43f5e;">as</span> f:
+        json.dump(reviews_json, f, indent=2)
+    print(<span style="color: #10b981;">"Successfully scraped"</span>, len(reviews_json.get(<span style="color: #10b981;">"reviews"</span>, [])), <span style="color: #10b981;">"reviews!"</span>)
+<span style="color: #f43f5e;">else:</span>
+    print(<span style="color: #10b981;">"Error:"</span>, res.status_code, res.text)
+</pre>
+
+                <h2>Data Analysis & NLP Insights</h2>
+                <p>After cleaning the dataset, I used basic natural language processing (NLP) techniques such as word frequency analysis, TF-IDF comparisons, and bigram analysis to identify patterns in customer feedback.</p>
+                
+                <p>Positive reviews frequently mentioned terms like “comfortable,” “great shoe,” and “super comfortable,” while dissatisfied customers commonly mentioned phrases such as “quality control” and “runs small.”</p>
+
+                <div style="margin: 2rem 0; overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; font-size: 0.95rem;">
+                        <thead>
+                            <tr style="background: var(--primary-color); color: white; text-align: left;">
+                                <th style="padding: 1rem; font-weight: 600;">Sentiment Category</th>
+                                <th style="padding: 1rem; font-weight: 600;">Top Word Frequencies & Bigrams</th>
+                                <th style="padding: 1rem; font-weight: 600;">Common Feedback Themes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 1rem; font-weight: 600; color: var(--success);">Positive Sentiment</td>
+                                <td style="padding: 1rem; font-family: monospace; color: var(--accent-dark);">"comfortable", "great shoe", "super comfortable"</td>
+                                <td style="padding: 1rem;">Excellent daily walking support, classic retro styling, responsive sole cushioning.</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0; background: var(--bg-light);">
+                                <td style="padding: 1rem; font-weight: 600; color: #ef4444;">Negative Sentiment</td>
+                                <td style="padding: 1rem; font-family: monospace; color: var(--accent-dark);">"quality control", "runs small", "sole squeaking"</td>
+                                <td style="padding: 1rem;">Glue stains around mid-soles, narrow fit requiring sizing up, aesthetic inconsistencies.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>The analysis revealed something interesting: customers generally loved the comfort and aesthetics of the shoe, but negative reviews consistently pointed toward sizing inconsistencies and manufacturing quality concerns. For a premium shoe retailing at over $200, even small quality control issues became highly noticeable in customer feedback.</p>
+
+                <h2>Key Lessons & Future Applications</h2>
+                <p>The project taught me several important lessons about modern web scraping:</p>
+                
+                <ul style="list-style-type: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li><strong>Not all websites are equally scrape-friendly:</strong> Large platforms like Amazon employ sophisticated anti-automation systems (such as advanced IP rotation blocking and CAPTCHA walls) that make scraping significantly more difficult.</li>
+                    <li><strong>Modern tools simplify dynamic pages:</strong> Tools like Firecrawl manage the rendering overhead of JavaScript-heavy websites, turning complex DOM crawling into a simple API call.</li>
+                    <li><strong>Data needs translation to insights:</strong> Scraping projects become much more valuable when the collected data is transformed into meaningful statistical analyses and business insights rather than simply stored in a spreadsheet.</li>
+                </ul>
+
+                <p>Although the original Amazon scraping attempt failed, the experience ultimately became a useful exercise in data collection, NLP analysis, and understanding the realities of modern web infrastructure.</p>
+
+                <div class="callout" style="background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--success); padding: 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
+                    <h3 style="color: var(--primary-color); margin-top: 0; font-size: 1.25rem;">Do you have a Data Science or Analytics Assignment due?</h3>
+                    <p style="margin-bottom: 1rem;">Practical projects like web scraping, NLP sentiment analysis, and regression modeling are exactly the type of assignments we regularly help students and researchers complete. From clean code to structured academic write-ups, we've got you covered.</p>
+                    <a href="../../#contact" class="btn btn-primary">Get Homework Assistance</a>
+                </div>
+
+                <p>If you are working on a similar assignment, research project, or portfolio idea and need assistance with data collection, Python analysis, or statistical interpretation, feel free to reach out through our main page at <a href="https://finishmystatisticsclass.com" style="font-weight: 600; text-decoration: underline;">Finish My Statistics Class</a>.</p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center">
+        <div class="container">
+            <div class="footer-links">
+                <a href="../../">Home</a>
+                <a href="../../#services">Services</a>
+                <a href="../../#blog">Blog</a>
+                <a href="../../#contact">Contact</a>
+                <a href="../../sitemap.xml">Sitemap</a>
+            </div>
+            <div class="social-links mg-t" style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                <a href="https://www.tiktok.com/@finishmystatisticsclass" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">TikTok</a>
+                <a href="https://www.instagram.com/finishmystatisticsclass/" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">Instagram</a>
+            </div>
+            <p class="copyright">&copy; <span id="year"></span> StatExpert Tutors. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="../../assets/js/script.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

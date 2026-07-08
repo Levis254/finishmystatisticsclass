@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step-by-Step ANOVA in SPSS | StatExpert</title>
+    <meta name="description" content="A complete walkthrough of running a One-Way ANOVA in SPSS, including interpreting output tables and reporting results in APA format.">
+    <meta name="keywords" content="ANOVA in SPSS, One-Way ANOVA, SPSS tutorial, statistics examples, post-hoc tests">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Step-by-Step ANOVA in SPSS">
+    <meta property="og:description" content="A complete walkthrough of running a One-Way ANOVA in SPSS.">
+    <!-- Using placeholder image from templates -->
+    <meta property="og:image" content="https://finishmystatisticsclass.com/images/og-image.jpg">
+    <meta property="og:url" content="https://finishmystatisticsclass.com/blog/anova-in-spss/">
+    <meta property="og:type" content="article">
+
+    <link rel="canonical" href="https://finishmystatisticsclass.com/blog/anova-in-spss/">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <!-- Structured Data (Article Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://finishmystatisticsclass.com/blog/anova-in-spss/"
+      },
+      "headline": "Step-by-Step ANOVA in SPSS",
+      "description": "A complete walkthrough of running a One-Way ANOVA in SPSS, including interpreting output.",
+      "image": "https://finishmystatisticsclass.com/images/og-image.jpg",  
+      "author": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors"
+      },  
+      "publisher": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://finishmystatisticsclass.com/logo.png"
+        },
+        "sameAs": [
+          "https://www.tiktok.com/@finishmystatisticsclass",
+          "https://www.instagram.com/finishmystatisticsclass/"
+        ]
+      },
+      "datePublished": "2023-10-30"
+    }
+    </script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../favicon.png">
+    <link rel="apple-touch-icon" href="../../favicon.png"></head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar glass">
+        <div class="container nav-content">
+            <a href="../../" class="brand"><img src="../../assets/images/logo.jpg" alt="StatExpert Logo" class="brand-logo"><span>Stat</span>Expert</a>
+            <nav class="nav-links" id="nav-links">
+                <a href="../../#services">Services</a>
+                <a href="../../#how-it-works">How It Works</a>
+                <a href="../../#blog">Articles</a>
+                <a href="../../#contact" class="btn btn-secondary">Get Help</a>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Article Header -->
+        <article class="container pd-y-lg mg-t-lg">
+            <div class="article-header text-center">
+                <span class="blog-category">Tutorials</span>
+                <h1>Step-by-Step ANOVA in SPSS</h1>
+                <div class="article-meta">
+                    Published on Oct 30, 2023 • 7 min read
+                </div>
+                <div class="blog-img placeholder-bg2" style="border-radius: var(--radius-md); margin-bottom: 2rem;"></div>
+            </div>
+
+            <div class="article-content" style="max-width: 800px; margin: 0 auto;">
+                <p>Running a One-Way ANOVA (Analysis of Variance) in SPSS is one of the most common tasks for students analyzing survey data or experimental results. While t-tests compare two groups, ANOVA is used when you need to compare the means of <strong>three or more independent groups</strong>.</p>
+                
+                <div class="callout" style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--accent); margin: 2rem 0;">
+                    <strong>Stuck on your SPSS Output or Dataset?</strong> 
+                    <br>Our experienced tutors can clean your data, run the ANOVA, and write up the APA results for you quickly. 
+                    <a href="../../#contact" style="color: var(--accent); font-weight: 600;">Get a free quote.</a>
+                </div>
+
+                <h2>1. When to use a One-Way ANOVA</h2>
+                <p>You should run a One-Way ANOVA if you meet these conditions:</p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                    <li>You have <strong>one continuous dependent variable</strong> (e.g., test scores, height, income).</li>
+                    <li>You have <strong>one categorical independent variable</strong> with three or more groups (e.g., diet type: Vegan, Vegetarian, Omnivore).</li>
+                    <li>The groups are independent (no participant is in more than one group).</li>
+                </ul>
+
+                <h2>2. Running the Test in SPSS</h2>
+                <p>Follow these clicks to run the analysis:</p>
+                <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                    <li>Go to the top menu and click <strong>Analyze</strong> > <strong>Compare Means</strong> > <strong>One-Way ANOVA...</strong></li>
+                    <li>Move your continuous variable (e.g., Test Scores) into the <strong>Dependent List</strong> box.</li>
+                    <li>Move your categorical variable (e.g., Diet Type) into the <strong>Factor</strong> box.</li>
+                    <li>Click <strong>Options</strong> and check <em>Descriptive</em> and <em>Homogeneity of variance test</em>. Click Continue.</li>
+                    <li>Click <strong>Post Hoc...</strong> and check <em>Tukey</em>. Click Continue, then click <strong>OK</strong>.</li>
+                </ol>
+
+                <h2>3. Interpreting the Output</h2>
+                <h3>The ANOVA Table</h3>
+                <p>Look at the main "ANOVA" table in your output viewer. Look at the column labeled <strong>Sig. (p-value)</strong>.</p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                    <li>If the Sig. value is <strong>less than 0.05</strong>, you have a statistically significant result! This means at least one group mean is different from the others.</li>
+                    <li>If it is exactly 0.05 or higher, there is no significant difference between your groups.</li>
+                </ul>
+
+                <h3>Post-Hoc Tests (Tukey HSD)</h3>
+                <p>If your ANOVA was significant (p < 0.05), the next question is: <em>Which specific groups differ from each other?</em> That's what the Post-Hoc table tells you.</p>
+                <p>Look at the <strong>Multiple Comparisons</strong> table. Find the rows where the <em>Sig.</em> column is less than 0.05. Those specific pairs of groups are the ones that are significantly different.</p>
+
+                <h2>Writing the APA Results</h2>
+                <p>Here is an example formatting template for an APA write-up:</p>
+                <blockquote style="background: var(--light); padding: 1.5rem; border-left: 4px solid #666; font-style: italic;">
+                    "A one-way ANOVA revealed that there was a statistically significant difference in test scores between at least two groups (F(2, 27) = 4.56, p = .019). Tukey’s HSD Test for multiple comparisons found that the mean value of test scores was significantly different between the Vegan group and the Omnivore group (p = .015). There was no statistically significant difference between the Vegetarian and Vegan groups (p = .124)."
+                </blockquote>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center">
+        <div class="container">
+            <div class="footer-links">
+                <a href="../../">Home</a>
+                <a href="../../#services">Services</a>
+                <a href="../../#blog">Blog</a>
+                <a href="../../#contact">Contact</a>
+                <a href="../../sitemap.xml">Sitemap</a>
+            </div>
+            <div class="social-links mg-t" style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                <a href="https://www.tiktok.com/@finishmystatisticsclass" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">TikTok</a>
+                <a href="https://www.instagram.com/finishmystatisticsclass/" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">Instagram</a>
+            </div>
+            <p class="copyright">&copy; <span id="year"></span> StatExpert Tutors. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

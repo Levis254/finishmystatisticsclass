@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R Programming Basics for Data Science | StatExpert</title>
+    <meta name="description" content="Get started with R programming basics. Learn data manipulation using dplyr and data visualization with ggplot2.">
+    <meta name="keywords" content="R programming, dplyr, ggplot2, data science, R basics tutorial">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="R Programming Basics for Data Science">
+    <meta property="og:description" content="Get started with data manipulation using dplyr and data visualization with ggplot2.">
+    <!-- Using placeholder image from templates -->
+    <meta property="og:image" content="https://finishmystatisticsclass.com/images/og-image.jpg">
+    <meta property="og:url" content="https://finishmystatisticsclass.com/blog/r-programming-basics/">
+    <meta property="og:type" content="article">
+
+    <link rel="canonical" href="https://finishmystatisticsclass.com/blog/r-programming-basics/">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <!-- Structured Data (Article Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://finishmystatisticsclass.com/blog/r-programming-basics/"
+      },
+      "headline": "R Programming Basics for Data Science",
+      "description": "Get started with data manipulation using dplyr and data visualization with ggplot2.",
+      "image": "https://finishmystatisticsclass.com/images/og-image.jpg",  
+      "author": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors"
+      },  
+      "publisher": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://finishmystatisticsclass.com/logo.png"
+        },
+        "sameAs": [
+          "https://www.tiktok.com/@finishmystatisticsclass",
+          "https://www.instagram.com/finishmystatisticsclass/"
+        ]
+      },
+      "datePublished": "2023-11-05"
+    }
+    </script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../favicon.png">
+    <link rel="apple-touch-icon" href="../../favicon.png"></head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar glass">
+        <div class="container nav-content">
+            <a href="../../" class="brand"><img src="../../assets/images/logo.jpg" alt="StatExpert Logo" class="brand-logo"><span>Stat</span>Expert</a>
+            <nav class="nav-links" id="nav-links">
+                <a href="../../#services">Services</a>
+                <a href="../../#how-it-works">How It Works</a>
+                <a href="../../#blog">Articles</a>
+                <a href="../../#contact" class="btn btn-secondary">Get Help</a>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Article Header -->
+        <article class="container pd-y-lg mg-t-lg">
+            <div class="article-header text-center">
+                <span class="blog-category">Coding</span>
+                <h1>R Programming Basics for Data Science</h1>
+                <div class="article-meta">
+                    Published on Nov 5, 2023 • 8 min read
+                </div>
+                <div class="blog-img placeholder-bg3" style="border-radius: var(--radius-md); margin-bottom: 2rem;"></div>
+            </div>
+
+            <div class="article-content" style="max-width: 800px; margin: 0 auto;">
+                <p>R is one of the most powerful and widely used programming languages for statistical computing and data analysis. If you're studying statistics, learning R will make your life significantly easier.</p>
+                
+                <div class="callout" style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--accent); margin: 2rem 0;">
+                    <strong>Having trouble debugging your R code?</strong> 
+                    <br>Our experienced tutors can fix your scripts, help you clean your data, and write up your assignment for you. 
+                    <a href="../../#contact" style="color: var(--accent); font-weight: 600;">Get a free quote.</a>
+                </div>
+
+                <h2>1. Getting Started: Vectors and DataFrames</h2>
+                <p>In R, everything revolves around objects. The most basic object is a vector, and a collection of vectors makes a DataFrame (similar to an Excel spreadsheet).</p>
+                
+                <pre style="background: #f4f5f7; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: monospace;">
+# Creating a vector of ages
+ages <- c(22, 25, 21, 23)
+
+# Creating a basic DataFrame
+my_data <- data.frame(
+  Name = c("Alice", "Bob", "Charlie", "David"),
+  Age = ages,
+  Passed = c(TRUE, FALSE, TRUE, TRUE)
+)
+</pre>
+
+                <h2>2. Data Wrangling with dplyr</h2>
+                <p>The <code>dplyr</code> library is the industry standard for manipulating data in R. Once you install it (<code>install.packages("dplyr")</code>), you can easily filter rows, select columns, and create new variables.</p>
+                
+                <pre style="background: #f4f5f7; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: monospace;">
+library(dplyr)
+
+# Filter for students older than 22 who passed
+filtered_data <- my_data %>%
+  filter(Age > 22 & Passed == TRUE)
+</pre>
+
+                <h2>3. Plotting with ggplot2</h2>
+                <p>Visualizing data is crucial. The <code>ggplot2</code> library uses a system of "layers" to build stunning, publication-ready graphs.</p>
+                
+                <pre style="background: #f4f5f7; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: monospace;">
+library(ggplot2)
+
+# Create a simple bar plot
+ggplot(my_data, aes(x = Name, y = Age, fill = Passed)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Student Ages", y = "Age in Years")
+</pre>
+
+                <h2>Next Steps</h2>
+                <p>Once you are comfortable with these basics, you can start running actual statistical tests (like t-tests and ANOVAs) directly in R using functions like <code>t.test()</code> and <code>aov()</code>.</p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center">
+        <div class="container">
+            <div class="footer-links">
+                <a href="../../">Home</a>
+                <a href="../../#services">Services</a>
+                <a href="../../#blog">Blog</a>
+                <a href="../../#contact">Contact</a>
+                <a href="../../sitemap.xml">Sitemap</a>
+            </div>
+            <div class="social-links mg-t" style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                <a href="https://www.tiktok.com/@finishmystatisticsclass" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">TikTok</a>
+                <a href="https://www.instagram.com/finishmystatisticsclass/" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">Instagram</a>
+            </div>
+            <p class="copyright">&copy; <span id="year"></span> StatExpert Tutors. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

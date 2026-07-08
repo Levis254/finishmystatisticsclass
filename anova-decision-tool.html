@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANOVA Decision Tool: Interpret Your Results Instantly | StatExpert</title>
+    <meta name="description" content="Use our free ANOVA Decision Tool to instantly determine statistical significance, get an explanation, and generate an APA format write-up for your results.">
+    <meta name="keywords" content="ANOVA decision tool, interpret ANOVA, one-way ANOVA p-value, statistical significance, ANOVA calculator, APA write-up">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="ANOVA Decision Tool: Interpret Your Results Instantly">
+    <meta property="og:description" content="Use our free interactive tool to interpret your ANOVA p-value, determine significance, and generate an APA write-up.">
+    <meta property="og:image" content="https://finishmystatisticsclass.com/images/og-image.jpg">
+    <meta property="og:url" content="https://finishmystatisticsclass.com/anova-decision-tool.html">
+    <meta property="og:type" content="website">
+
+    <link rel="canonical" href="https://finishmystatisticsclass.com/anova-decision-tool.html">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Inline styles for the interactive tool -->
+    <style>
+        .tool-hero {
+            padding-top: 150px;
+            padding-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(16, 185, 129, 0.05), transparent);
+        }
+        .anova-tool {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(16,185,129,0.2);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            margin: 0 auto 4rem;
+            max-width: 600px;
+            box-shadow: var(--shadow-lg);
+        }
+        .anova-tool h3 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+        }
+        .anova-tool h3 .tool-icon {
+            font-size: 2rem;
+        }
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .tool-field {
+            text-align: left;
+        }
+        .tool-field label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--primary-color);
+        }
+        .tool-field input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 1.1rem;
+            transition: var(--transition-fast);
+            background-color: #fff;
+        }
+        .tool-field input:focus {
+            outline: none;
+            border-color: var(--success);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        }
+        .tool-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            background-color: var(--success);
+            color: white;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+            width: 100%;
+        }
+        .tool-btn:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+        }
+        .tool-result {
+            margin-top: 2rem;
+            padding: 1.75rem;
+            border-radius: var(--radius-md);
+            display: none;
+            animation: fadeInUp 0.4s ease-out forwards;
+            text-align: left;
+        }
+        .tool-result.show { display: block; }
+        .tool-result.reject {
+            background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.15));
+            border-left: 5px solid var(--success);
+        }
+        .tool-result.fail {
+            background: linear-gradient(135deg, rgba(239,68,68,0.06), rgba(239,68,68,0.12));
+            border-left: 5px solid #ef4444;
+        }
+        .tool-result.error-state {
+            background: rgba(245,158,11,0.1);
+            border-left: 5px solid #f59e0b;
+        }
+        .tool-result-title {
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .tool-result-explanation {
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .tool-result-writeup {
+            font-size: 1rem;
+            background: rgba(255,255,255,0.8);
+            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            border: 1px dashed rgba(0,0,0,0.15);
+            color: var(--primary-color);
+            font-style: italic;
+        }
+        
+        .tool-info {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+        .tool-info h2 {
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .tool-info p {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        .tool-info ul {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            margin-left: 1.5rem;
+        }
+        .tool-info li {
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-grid { grid-template-columns: 1fr; }
+            .anova-tool { padding: 2rem 1.5rem; }
+        }
+    </style>
+
+    <!-- Structured Data (SoftwareApplication Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "ANOVA Decision Tool",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "description": "A free interactive tool to instantly determine statistical significance for ANOVA tests and generate APA format write-ups.",
+      "url": "https://finishmystatisticsclass.com/anova-decision-tool.html",
+      "publisher": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors"
+      }
+    }
+    </script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png"></head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar glass">
+        <div class="container nav-content">
+            <a href="./" class="brand"><img src="assets/images/logo.jpg" alt="StatExpert Logo" class="brand-logo"><span>Stat</span>Expert</a>
+            <nav class="nav-links" id="nav-links">
+                <a href="./#services">Services</a>
+                <a href="./#how-it-works">How It Works</a>
+                <a href="./#blog">Articles</a>
+                <a href="p-value-interpreter.html" style="color: var(--accent-color); font-weight: 700;">Tools</a>
+                <a href="./#contact" class="btn btn-secondary">Get Help</a>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Tool Header -->
+        <section class="tool-hero">
+            <div class="container">
+                <span class="badge fade-in-up" style="background-color: rgba(16, 185, 129, 0.1); color: var(--success);">Free Statistics Tool</span>
+                <h1 class="fade-in-up delay-1">ANOVA Decision Tool</h1>
+                <p class="fade-in-up delay-2" style="max-width: 600px; margin: 0 auto; font-size: 1.25rem;">Instantly interpret your ANOVA results, determine significance, and get an APA-style write-up.</p>
+            </div>
+        </section>
+
+        <section class="container" style="margin-top: -2rem; position: relative; z-index: 10;">
+            <!-- Interactive ANOVA Tool -->
+            <div class="anova-tool fade-in-up delay-3" id="anova-tool">
+                <h3><span class="tool-icon">📊</span> Check Your ANOVA Significance</h3>
+
+                <div class="tool-grid">
+                    <div class="tool-field">
+                        <label for="anova_p">P-value (Sig.):</label>
+                        <input type="number" id="anova_p" step="0.001" placeholder="e.g. 0.024">
+                    </div>
+                    <div class="tool-field">
+                        <label for="anova_alpha">Significance Level (α):</label>
+                        <input type="number" id="anova_alpha" step="0.01" value="0.05">
+                    </div>
+                </div>
+
+                <button class="tool-btn" onclick="interpretANOVA()">Interpret Result</button>
+
+                <div class="tool-result" id="tool-result">
+                    <div class="tool-result-title" id="anova_result"></div>
+                    <p class="tool-result-explanation" id="anova_explanation"></p>
+                    <div class="tool-result-writeup">
+                        <strong style="color: #334155; font-style: normal; display: block; margin-bottom: 0.25rem;">Suggested Write-up:</strong>
+                        <span id="anova_writeup"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supporting Information -->
+            <div class="tool-info fade-in delay-4">
+                <div class="callout" style="background: var(--light); padding: 2rem; border-left: 4px solid var(--accent); margin: 3rem 0; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                    <strong style="font-size: 1.1rem; display: block; margin-bottom: 0.5rem; color: var(--primary-color);">Need help running your ANOVA or doing post-hoc tests?</strong> 
+                    Our expert tutors can perform the analysis, check assumptions, and write up the full results in APA format. 
+                    <a href="./#contact" style="color: var(--accent); font-weight: 600; text-decoration: underline;">Get a free quote today.</a>
+                </div>
+
+                <h2>What Does an ANOVA Test Do?</h2>
+                <p>Analysis of Variance (ANOVA) is a statistical method used to test differences between two or more means. It analyzes variances to determine if the means of different groups are significantly different from each other.</p>
+                <p>You typically use a One-Way ANOVA when you have one independent categorical variable (with three or more groups) and one dependent continuous variable. For example, comparing the test scores of students taught using three different teaching methods.</p>
+
+                <h2>Interpreting Your Result</h2>
+                <p>When you run an ANOVA, you are testing a null hypothesis (H₀) and an alternative hypothesis (H₁):</p>
+                <ul>
+                    <li><strong>Null Hypothesis (H₀):</strong> All group means are equal. (There is no difference).</li>
+                    <li><strong>Alternative Hypothesis (H₁):</strong> At least one group mean is different from the rest.</li>
+                </ul>
+                
+                <p>If your p-value is <strong>less than your significance level (α)</strong>, you reject the null hypothesis. This indicates that a significant difference exists somewhere among your groups.</p>
+
+                <h2>What Happens Next? (Post-Hoc Tests)</h2>
+                <p>If your ANOVA result is <em>not</em> statistically significant, your analysis stops there. You conclude there's no evidence of a difference.</p>
+                <p>However, if your result <em>is</em> statistically significant, the ANOVA only tells you that at least one group is different—it <strong>does not tell you which specific groups differ</strong>. To find out exactly where the differences lie, you must conduct <strong>Post-Hoc Tests</strong> (like Tukey's HSD or Bonferroni corrections).</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center">
+        <div class="container">
+            <div class="footer-links">
+                <a href="./">Home</a>
+                <a href="./#services">Services</a>
+                <a href="blog/">Blog</a>
+                <a href="./#contact">Contact</a>
+                <a href="sitemap.xml">Sitemap</a>
+            </div>
+            <div class="social-links mg-t" style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                <a href="https://www.tiktok.com/@finishmystatisticsclass" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">TikTok</a>
+                <a href="https://www.instagram.com/finishmystatisticsclass/" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">Instagram</a>
+            </div>
+            <p class="copyright">&copy; <span id="year"></span> StatExpert Tutors. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="assets/js/script.js"></script>
+
+    <!-- ANOVA Interpreter Script -->
+    <script>
+    function interpretANOVA() {
+        let p = parseFloat(document.getElementById("anova_p").value);
+        let alpha = parseFloat(document.getElementById("anova_alpha").value);
+        let resultBox = document.getElementById("tool-result");
+        let titleEl = document.getElementById("anova_result");
+        let explanationEl = document.getElementById("anova_explanation");
+        let writeupEl = document.getElementById("anova_writeup");
+        let writeupContainer = document.querySelector(".tool-result-writeup");
+
+        // Reset classes
+        resultBox.className = "tool-result";
+        writeupContainer.style.display = "none";
+
+        if (isNaN(p) || isNaN(alpha)) {
+            titleEl.innerHTML = "⚠️ Please enter valid values";
+            explanationEl.innerText = "Make sure both the p-value and significance level fields contain numbers.";
+            resultBox.classList.add("show", "error-state");
+            return;
+        }
+
+        if (p < 0 || p > 1) {
+            titleEl.innerHTML = "⚠️ Invalid P-value";
+            explanationEl.innerText = "The p-value must be between 0 and 1.";
+            resultBox.classList.add("show", "error-state");
+            return;
+        }
+
+        if (alpha < 0 || alpha > 1) {
+            titleEl.innerHTML = "⚠️ Invalid Alpha Level";
+            explanationEl.innerText = "The significance level (α) must be between 0 and 1.";
+            resultBox.classList.add("show", "error-state");
+            return;
+        }
+
+        writeupContainer.style.display = "block";
+
+        if (p < alpha) {
+            titleEl.innerHTML = "✅ Reject the null hypothesis (H₀)";
+            explanationEl.innerHTML = `The result is <strong>statistically significant</strong> (p = ${p}). This means there is a significant difference between at least two group means.`;
+            writeupEl.innerText = `There was a statistically significant difference between groups (p = ${p}), suggesting that at least one group mean differs from the others.`;
+            resultBox.classList.add("show", "reject");
+        } else {
+            titleEl.innerHTML = "❌ Fail to reject the null hypothesis (H₀)";
+            explanationEl.innerHTML = `The result is <strong>not statistically significant</strong> (p = ${p}). This means there is no evidence of a difference between group means.`;
+            writeupEl.innerText = `There was no statistically significant difference between groups (p = ${p}), indicating that the group means are similar.`;
+            resultBox.classList.add("show", "fail");
+        }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free P-Value Interpreter: Understand Your Results | StatExpert</title>
+    <meta name="description" content="Struggling to interpret your p-value? Use our free P-Value Interpreter tool to instantly determine whether to reject or fail to reject the null hypothesis — with a plain-English conclusion.">
+    <meta name="keywords" content="free p-value interpreter, p-value meaning, reject null hypothesis, fail to reject null hypothesis, statistical significance, hypothesis testing, SPSS p-value, p-value conclusion">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Free P-Value Interpreter: Stop Guessing What Your Statistical Results Mean">
+    <meta property="og:description" content="Enter your p-value and significance level to instantly get a plain-English conclusion. Perfect for students using SPSS, R, Python, Excel, or Minitab.">
+    <meta property="og:image" content="https://finishmystatisticsclass.com/images/og-image.jpg">
+    <meta property="og:url" content="https://finishmystatisticsclass.com/blog/free-p-value-interpreter/">
+    <meta property="og:type" content="article">
+
+    <link rel="canonical" href="https://finishmystatisticsclass.com/blog/free-p-value-interpreter/">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <!-- Inline styles for the interactive tool -->
+    <style>
+        .pvalue-tool {
+            background: linear-gradient(135deg, rgba(14,165,233,0.05) 0%, rgba(56,189,248,0.08) 100%);
+            border: 1px solid rgba(14,165,233,0.2);
+            border-radius: var(--radius-md);
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+        }
+        .pvalue-tool h3 {
+            font-size: 1.35rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .pvalue-tool h3 .tool-icon {
+            font-size: 1.5rem;
+        }
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .tool-field label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+        .tool-field input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition-fast);
+            background-color: #fff;
+        }
+        .tool-field input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        }
+        .tool-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            background-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.4);
+            width: 100%;
+        }
+        .tool-btn:hover {
+            background-color: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+        }
+        .tool-result {
+            margin-top: 1.75rem;
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            display: none;
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+        .tool-result.show { display: block; }
+        .tool-result.reject {
+            background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.15));
+            border-left: 4px solid var(--success);
+        }
+        .tool-result.fail {
+            background: linear-gradient(135deg, rgba(239,68,68,0.06), rgba(239,68,68,0.12));
+            border-left: 4px solid #ef4444;
+        }
+        .tool-result.error-state {
+            background: rgba(245,158,11,0.1);
+            border-left: 4px solid #f59e0b;
+        }
+        .tool-result-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        .tool-result-explanation {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .tool-result-conclusion {
+            margin-top: 1rem;
+            padding: 0.85rem 1rem;
+            background: rgba(255,255,255,0.7);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-style: italic;
+            line-height: 1.7;
+            color: var(--primary-color);
+        }
+        .mistake-card {
+            background: var(--light);
+            border-radius: var(--radius-sm);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent-color);
+        }
+        .mistake-card h4 {
+            margin: 0 0 0.5rem;
+            font-size: 1rem;
+        }
+        .mistake-card p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .example-block {
+            background: rgba(14,165,233,0.05);
+            border: 1px solid rgba(14,165,233,0.15);
+            border-radius: var(--radius-sm);
+            padding: 1.25rem 1.5rem;
+            margin: 1.25rem 0;
+        }
+        .example-block .example-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        .example-block blockquote {
+            margin: 0.5rem 0 0;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.6);
+            border-radius: var(--radius-sm);
+            font-style: italic;
+            border-left: 3px solid var(--accent-color);
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(14,165,233,0.15);
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .video-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent-color);
+            margin-bottom: 0.75rem;
+        }
+        @media (max-width: 600px) {
+            .tool-grid { grid-template-columns: 1fr; }
+            .pvalue-tool { padding: 1.5rem; }
+        }
+    </style>
+
+    <!-- Structured Data (Article + Video Schema) -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://finishmystatisticsclass.com/blog/free-p-value-interpreter/"
+        },
+        "headline": "Free P-Value Interpreter: Stop Guessing What Your Statistical Results Mean",
+        "description": "Struggling to interpret your p-value? Use our free P-Value Interpreter tool to instantly determine whether to reject or fail to reject the null hypothesis, with a plain-English conclusion.",
+        "image": "https://finishmystatisticsclass.com/images/og-image.jpg",
+        "author": {
+          "@type": "Organization",
+          "name": "StatExpert Tutors"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "StatExpert Tutors",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://finishmystatisticsclass.com/logo.png"
+          },
+          "sameAs": [
+            "https://www.tiktok.com/@finishmystatisticsclass",
+            "https://www.instagram.com/finishmystatisticsclass/"
+          ]
+        },
+        "datePublished": "2026-06-12"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "How to Interpret a P-Value Using the Free P-Value Interpreter Tool",
+        "description": "A step-by-step video guide showing how to use the free P-Value Interpreter tool to determine whether to reject or fail to reject the null hypothesis.",
+        "embedUrl": "https://www.youtube.com/embed/K2-_r1tm_lM",
+        "url": "https://youtu.be/K2-_r1tm_lM",
+        "thumbnailUrl": "https://img.youtube.com/vi/K2-_r1tm_lM/maxresdefault.jpg",
+        "uploadDate": "2026-06-12",
+        "publisher": {
+          "@type": "Organization",
+          "name": "StatExpert Tutors",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://finishmystatisticsclass.com/logo.png"
+          }
+        }
+      }
+    ]
+    </script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../favicon.png">
+    <link rel="apple-touch-icon" href="../../favicon.png"></head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar glass">
+        <div class="container nav-content">
+            <a href="../../" class="brand"><img src="../../assets/images/logo.jpg" alt="StatExpert Logo" class="brand-logo"><span>Stat</span>Expert</a>
+            <nav class="nav-links" id="nav-links">
+                <a href="../../#services">Services</a>
+                <a href="../../#how-it-works">How It Works</a>
+                <a href="../../#blog">Articles</a>
+                <a href="../../#contact" class="btn btn-secondary">Get Help</a>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Article Header -->
+        <article class="container pd-y-lg mg-t-lg">
+            <div class="article-header text-center">
+                <span class="blog-category">Interactive Tools</span>
+                <h1>Free P-Value Interpreter: Stop Guessing What Your Statistical Results Mean</h1>
+                <div class="article-meta">
+                    Published on Jun 12, 2026 • 6 min read
+                </div>
+                <div class="blog-img placeholder-bg2" style="border-radius: var(--radius-md); margin-bottom: 2rem;"></div>
+            </div>
+
+            <div class="article-content" style="max-width: 800px; margin: 0 auto;">
+
+                <p>Have you ever completed a hypothesis test and found yourself staring at a p-value, wondering what to do next?</p>
+
+                <p><strong>You're not alone.</strong></p>
+
+                <p>Many students can calculate a p-value using SPSS, Excel, R, Python, Minitab, or a graphing calculator, but interpreting the result correctly is often the hardest part. In fact, one of the most common reasons students lose marks on statistics assignments is not because their calculations are wrong — but because their <strong>conclusions are written incorrectly</strong>.</p>
+
+                <p>Use the free tool below to instantly interpret your result, or watch the video walkthrough first to see exactly how it works.</p>
+
+                <!-- YouTube Video Section -->
+                <h2>📺 Watch: How to Interpret a P-Value (Video Guide)</h2>
+                <p>Not sure how to use the tool? Watch this short walkthrough that explains p-value interpretation step by step.</p>
+
+                <!-- YouTube Link Card -->
+                <a href="https://youtu.be/K2-_r1tm_lM" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; gap:1rem; background:#fff; border:2px solid rgba(255,0,0,0.2); border-radius:var(--radius-sm); padding:1rem 1.25rem; margin-bottom:1rem; text-decoration:none; color:inherit; box-shadow:0 2px 12px rgba(0,0,0,0.07); transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 20px rgba(255,0,0,0.18)'" onmouseout="this.style.boxShadow='0 2px 12px rgba(0,0,0,0.07)'">
+                    <span style="font-size:2.5rem; flex-shrink:0;">▶</span>
+                    <span>
+                        <strong style="display:block; font-size:1rem; color:#cc0000;">Watch on YouTube</strong>
+                        <span style="font-size:0.9rem; color:var(--text-muted);">How to Interpret a P-Value — Free P-Value Interpreter Tool Walkthrough</span>
+                    </span>
+                    <span style="margin-left:auto; font-size:1.25rem; color:#cc0000;">→</span>
+                </a>
+
+                <!-- YouTube Video Embed -->
+                <div class="video-label">▶ Video Walkthrough</div>
+                <div class="video-wrapper">
+                    <iframe
+                        src="https://www.youtube.com/embed/K2-_r1tm_lM"
+                        title="How to Interpret a P-Value Using the Free P-Value Interpreter Tool"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin">
+                    </iframe>
+                </div>
+
+                <!-- Interactive P-Value Tool -->
+                <div class="pvalue-tool" id="pvalue-tool">
+                    <h3><span class="tool-icon">🧮</span> Free P-Value Interpreter</h3>
+
+                    <div class="tool-grid">
+                        <div class="tool-field">
+                            <label for="pval-free">Your P-Value:</label>
+                            <input type="number" id="pval-free" step="0.001" min="0" max="1" placeholder="e.g. 0.021">
+                        </div>
+                        <div class="tool-field">
+                            <label for="alpha-free">Significance Level (α):</label>
+                            <input type="number" id="alpha-free" step="0.01" min="0" max="1" value="0.05">
+                        </div>
+                    </div>
+
+                    <button class="tool-btn" id="interpret-btn" onclick="interpretPFree()">Interpret My P-Value</button>
+
+                    <div class="tool-result" id="tool-result-free">
+                        <p class="tool-result-title" id="result-title-free"></p>
+                        <p class="tool-result-explanation" id="result-explanation-free"></p>
+                        <div class="tool-result-conclusion" id="result-conclusion-free"></div>
+                    </div>
+                </div>
+
+                <div class="callout" style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--accent); margin: 2rem 0;">
+                    <strong>Need help interpreting your full SPSS, R, or Python output?</strong>
+                    <br>Our expert tutors can walk you through every table, write up your APA results, and explain the statistics step-by-step.
+                    <a href="../../#contact" style="color: var(--accent); font-weight: 600;">Get a free quote.</a>
+                </div>
+
+                <h2>Why Students Struggle With P-Values</h2>
+                <p>Every semester, students ask questions such as:</p>
+                <ul>
+                    <li>What does <strong>p &lt; 0.05</strong> mean?</li>
+                    <li>What does <strong>p &gt; 0.05</strong> mean?</li>
+                    <li>Do I reject the null hypothesis?</li>
+                    <li>What does "fail to reject" mean?</li>
+                    <li>How do I write my conclusion correctly?</li>
+                </ul>
+                <p>These questions appear across introductory statistics courses, business statistics, nursing statistics, psychology research methods, economics, and graduate-level research projects.</p>
+                <p>The challenge is that many textbooks explain the mechanics of hypothesis testing but do not provide enough guidance on how to translate a number into a well-written conclusion.</p>
+
+                <h2>Common P-Value Mistakes</h2>
+
+                <div class="mistake-card">
+                    <h4>Mistake 1: Thinking the P-Value Proves a Hypothesis</h4>
+                    <p>A p-value does not prove that a hypothesis is true or false. Instead, it measures how compatible your observed data are with the null hypothesis. A small p-value simply means the data would be unlikely if the null hypothesis were true.</p>
+                </div>
+
+                <div class="mistake-card">
+                    <h4>Mistake 2: Writing "Accept the Null Hypothesis"</h4>
+                    <p>One of the most common errors is writing <em>"We accept the null hypothesis."</em> In most statistics courses, the preferred wording is <em>"We fail to reject the null hypothesis."</em> We never truly prove H₀ is correct — we simply lack sufficient evidence against it.</p>
+                </div>
+
+                <div class="mistake-card">
+                    <h4>Mistake 3: Stopping at "Reject H₀" Without Explaining</h4>
+                    <p>Many students stop after writing "Reject H₀." However, instructors often expect a complete interpretation that connects the statistical result back to the research question in plain English.</p>
+                </div>
+
+                <h2>Example Interpretations</h2>
+                <p>Here are two worked examples using the most common significance level of α = 0.05.</p>
+
+                <div class="example-block">
+                    <div class="example-label">Example 1 — Reject the Null Hypothesis</div>
+                    <p>Suppose your p-value is <strong>0.021</strong> and α = 0.05.</p>
+                    <p>Since 0.021 &lt; 0.05, you <strong>reject the null hypothesis</strong>. A proper conclusion might be:</p>
+                    <blockquote>There is sufficient statistical evidence at the 5% significance level to reject the null hypothesis. The result is statistically significant (p = 0.021).</blockquote>
+                </div>
+
+                <div class="example-block">
+                    <div class="example-label">Example 2 — Fail to Reject the Null Hypothesis</div>
+                    <p>Suppose your p-value is <strong>0.314</strong> and α = 0.05.</p>
+                    <p>Since 0.314 &gt; 0.05, you <strong>fail to reject the null hypothesis</strong>. A proper conclusion might be:</p>
+                    <blockquote>There is insufficient statistical evidence at the 5% significance level to reject the null hypothesis. The result is not statistically significant (p = 0.314).</blockquote>
+                </div>
+
+                <p>The P-Value Interpreter at the top of this page generates these conclusions automatically — just enter your values and click the button.</p>
+
+                <h2>📖 A More Detailed Guide to P-Value Interpretation</h2>
+                <p>If you would like a deeper explanation of how p-values work, common mistakes students make, and additional examples, read the full guide published on Medium:</p>
+
+                <!-- Medium Article Link Card -->
+                <a href="https://medium.com/@finishmystatisticsclass/struggling-to-interpret-a-p-value-youre-not-alone-99dd928a7f2d" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; gap:1rem; background:#fff; border:2px solid rgba(14,165,233,0.2); border-radius:var(--radius-sm); padding:1rem 1.25rem; margin-bottom:1.5rem; text-decoration:none; color:inherit; box-shadow:0 2px 12px rgba(0,0,0,0.07); transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 20px rgba(14,165,233,0.2)'" onmouseout="this.style.boxShadow='0 2px 12px rgba(0,0,0,0.07)'">
+                    <span style="font-size:2.5rem; flex-shrink:0;">📝</span>
+                    <span>
+                        <strong style="display:block; font-size:1rem; color:var(--accent-color);">Read on Medium</strong>
+                        <span style="font-size:0.9rem; color:var(--text-muted);">Struggling to Interpret a P-Value? You're Not Alone</span>
+                    </span>
+                    <span style="margin-left:auto; font-size:1.25rem; color:var(--accent-color);">→</span>
+                </a>
+
+                <p>The guide walks through the logic behind hypothesis testing and explains why so many students struggle with p-value interpretation.</p>
+
+                <h2>Need Help With Your Statistics Assignment?</h2>
+                <p>Our team regularly assists students with:</p>
+                <ul>
+                    <li>Statistics assignments and homework</li>
+                    <li>SPSS analysis and output interpretation</li>
+                    <li>Hypothesis testing write-ups</li>
+                    <li>Research methods and data analysis projects</li>
+                    <li>Statistical report writing in APA format</li>
+                    <li>MyStatLab assignments</li>
+                </ul>
+
+                <p>If you are struggling to interpret statistical results or complete a statistics assignment, start by using the free P-Value Interpreter above. It can save time, reduce confusion, and help you understand what your results actually mean.</p>
+
+                <p>For personalized help, visit our <a href="../../#contact">Contact page</a> to get a free quote from one of our expert tutors.</p>
+
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center">
+        <div class="container">
+            <div class="footer-links">
+                <a href="../../">Home</a>
+                <a href="../../#services">Services</a>
+                <a href="../../#blog">Blog</a>
+                <a href="../../#contact">Contact</a>
+                <a href="../../sitemap.xml">Sitemap</a>
+            </div>
+            <div class="social-links mg-t" style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                <a href="https://www.tiktok.com/@finishmystatisticsclass" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">TikTok</a>
+                <a href="https://www.instagram.com/finishmystatisticsclass/" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">Instagram</a>
+            </div>
+            <p class="copyright">&copy; <span id="year"></span> StatExpert Tutors. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="../../assets/js/script.js"></script>
+
+    <!-- P-Value Interpreter Script -->
+    <script>
+    function interpretPFree() {
+        const p = parseFloat(document.getElementById("pval-free").value);
+        const alpha = parseFloat(document.getElementById("alpha-free").value);
+        const resultBox = document.getElementById("tool-result-free");
+        const titleEl = document.getElementById("result-title-free");
+        const explanationEl = document.getElementById("result-explanation-free");
+        const conclusionEl = document.getElementById("result-conclusion-free");
+
+        // Reset
+        resultBox.className = "tool-result";
+        conclusionEl.style.display = "none";
+
+        if (isNaN(p) || isNaN(alpha)) {
+            titleEl.innerText = "⚠️ Please enter valid values.";
+            explanationEl.innerText = "Make sure both the p-value and significance level fields contain numbers.";
+            resultBox.classList.add("show", "error-state");
+            return;
+        }
+
+        if (p < 0 || p > 1) {
+            titleEl.innerText = "⚠️ Invalid P-Value.";
+            explanationEl.innerText = "The p-value must be between 0 and 1.";
+            resultBox.classList.add("show", "error-state");
+            return;
+        }
+
+        if (alpha <= 0 || alpha >= 1) {
+            titleEl.innerText = "⚠️ Invalid Significance Level.";
+            explanationEl.innerText = "The significance level (α) must be between 0 and 1 (e.g., 0.05 or 0.01).";
+            resultBox.classList.add("show", "error-state");
+            return;
+        }
+
+        const alphaPercent = (alpha * 100).toFixed(0);
+
+        if (p < alpha) {
+            titleEl.innerText = "✅ Reject the Null Hypothesis (H₀)";
+            explanationEl.innerText = `Since p = ${p} is less than α = ${alpha}, the result is statistically significant at the ${alphaPercent}% significance level. There is sufficient evidence to support the alternative hypothesis.`;
+            conclusionEl.innerHTML = `<strong>Conclusion to write:</strong><br>"There is sufficient statistical evidence at the ${alphaPercent}% significance level to reject the null hypothesis (p = ${p})."`; 
+            conclusionEl.style.display = "block";
+            resultBox.classList.add("show", "reject");
+        } else {
+            titleEl.innerText = "❌ Fail to Reject the Null Hypothesis (H₀)";
+            explanationEl.innerText = `Since p = ${p} is greater than or equal to α = ${alpha}, the result is not statistically significant at the ${alphaPercent}% significance level. There is insufficient evidence to support the alternative hypothesis.`;
+            conclusionEl.innerHTML = `<strong>Conclusion to write:</strong><br>"There is insufficient statistical evidence at the ${alphaPercent}% significance level to reject the null hypothesis (p = ${p})."`;
+            conclusionEl.style.display = "block";
+            resultBox.classList.add("show", "fail");
+        }
+    }
+
+    // Allow pressing Enter to trigger interpretation
+    document.getElementById("pval-free").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") interpretPFree();
+    });
+    document.getElementById("alpha-free").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") interpretPFree();
+    });
+    </script>
+</body>
+</html>

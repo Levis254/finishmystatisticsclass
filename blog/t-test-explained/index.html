@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Tests Explained Simply: When and How to Use Them | StatExpert</title>
+    <meta name="description" content="Confused by independent vs. paired t-tests? Read our beginner-friendly breakdown of t-tests with real-world examples to help you ace your statistics class.">
+    <meta name="keywords" content="t-test explained, independent t-test, paired t-test, student t-test example, statistics tutorial">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="T-Tests Explained Simply: When and How to Use Them">
+    <meta property="og:description" content="A beginner-friendly breakdown with examples of when to use independent vs paired t-tests.">
+    <meta property="og:image" content="https://finishmystatisticsclass.com/images/t-test-og.jpg">
+    <meta property="og:url" content="https://finishmystatisticsclass.com/blog/t-test-explained/">
+    <meta property="og:type" content="article">
+
+    <link rel="canonical" href="https://finishmystatisticsclass.com/blog/t-test-explained/">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <!-- Structured Data (Article Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://finishmystatisticsclass.com/blog/t-test-explained/"
+      },
+      "headline": "T-Tests Explained Simply: When and How to Use Them",
+      "description": "Confused by independent vs. paired t-tests? Here is a beginner-friendly breakdown with examples.",
+      "image": "https://finishmystatisticsclass.com/images/t-test-og.jpg",  
+      "author": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors"
+      },  
+      "publisher": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://finishmystatisticsclass.com/logo.png"
+        },
+        "sameAs": [
+          "https://www.tiktok.com/@finishmystatisticsclass",
+          "https://www.instagram.com/finishmystatisticsclass/"
+        ]
+      },
+      "datePublished": "2023-10-25"
+    }
+    </script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../favicon.png">
+    <link rel="apple-touch-icon" href="../../favicon.png"></head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar glass">
+        <div class="container nav-content">
+            <a href="../../" class="brand"><img src="../../assets/images/logo.jpg" alt="StatExpert Logo" class="brand-logo"><span>Stat</span>Expert</a>
+            <nav class="nav-links" id="nav-links">
+                <a href="../../#services">Services</a>
+                <a href="../../#how-it-works">How It Works</a>
+                <a href="../../#blog">Articles</a>
+                <a href="../../#contact" class="btn btn-secondary">Get Help</a>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Article Header -->
+        <article class="container pd-y-lg">
+            <div class="article-header">
+                <span class="blog-category">Statistics Concepts</span>
+                <h1>T-Tests Explained Simply: When and How to Use Them</h1>
+                <div class="article-meta">
+                    Published on Oct 25, 2023 • 5 min read
+                </div>
+                <div class="blog-img" style="background-image: url('../../assets/images/Ttests.jpg'); border-radius: var(--radius-md); margin-bottom: 2rem; height: 300px; background-size: cover; background-position: center;"></div>
+            </div>
+
+            <div class="article-content">
+                <p>If you're taking a statistics class, you will inevitably encounter the <strong>t-test</strong>. It's one of the most common statistical tests used in research, but figuring out <em>which</em> t-test to use can be confusing.</p>
+
+                <p>In this guide, we'll break down the three main types of t-tests, explain when to use them, and provide simple, real-world examples.</p>
+                
+                <div class="callout">
+                    <strong>Need help with a t-test assignment or SPSS analysis?</strong> 
+                    <br>Our expert tutors can check your work, write up the APA results, or explain the math step-by-step. 
+                    <a href="../../#contact">Get a free quote today.</a>
+                </div>
+
+                <h2>1. What is a T-Test?</h2>
+                <p>A t-test is an inferential statistic used to determine if there is a significant difference between the means of two groups. Simply put, it helps you answer the question: <em>"Are these two averages truly different from each other, or did this difference happen by random chance?"</em></p>
+
+                <figure style="margin: 2.5rem 0; text-align: center;">
+                    <img src="../../assets/images/Types%20of%20Ttests.png" alt="Types of T-Tests Infographic" style="border-radius: var(--radius-md); box-shadow: var(--shadow-md); margin: 0 auto; max-width: 100%; height: auto;">
+                    <figcaption style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-muted); font-style: italic;">Breakdown of different types of T-tests based on your study design.</figcaption>
+                </figure>
+
+                <h2>2. The Independent Samples T-Test</h2>
+                <p><strong>When to use it:</strong> Use this test when you want to compare the means of two <em>completely separate, independent groups</em>.</p>
+                <ul>
+                    <li><strong>Example:</strong> Comparing the test scores of Group A (students who drank coffee) and Group B (students who didn't drink coffee).</li>
+                    <li><strong>Assumption:</strong> The people in Group A are entirely different from the people in Group B.</li>
+                </ul>
+
+                <h2>3. The Paired Samples T-Test (Dependent)</h2>
+                <p><strong>When to use it:</strong> Use this test when you want to compare the means of the <em>same group of people</em> at two different times or under two different conditions.</p>
+                <ul>
+                    <li><strong>Example:</strong> Measuring students' test scores <em>before</em> tutoring and measuring the exact same students' scores <em>after</em> tutoring.</li>
+                    <li><strong>Assumption:</strong> The data pairs are linked (e.g., pre-test/post-test).</li>
+                </ul>
+
+                <h2>4. The One-Sample T-Test</h2>
+                <p><strong>When to use it:</strong> Use this test when you want to compare the mean of <em>one specific group</em> to a known or hypothesized population mean.</p>
+                <ul>
+                    <li><strong>Example:</strong> Testing if the average height of basketball players in a specific college is significantly different from the national average height of college males (which is known).</li>
+                </ul>
+
+                <h2>Conclusion</h2>
+                <p>Choosing the right t-test comes down to analyzing your groups: Are they separate (Independent), the same people measured twice (Paired), or one group compared to a known standard (One-Sample)?</p>
+                
+                <p>Mastering these distinctions is key to running accurate analyses in software like SPSS, R, or Python. If you find yourself stuck on an output table or deciding which test to run for your dissertation, don't hesitate to reach out to our team of experts via the <a href="../../#services">Services page</a>.</p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center">
+        <div class="container">
+            <div class="footer-links">
+                <a href="../../">Home</a>
+                <a href="../../#services">Services</a>
+                <a href="../../#blog">Blog</a>
+                <a href="../../#contact">Contact</a>
+                <a href="../../sitemap.xml">Sitemap</a>
+            </div>
+            <div class="social-links mg-t" style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                <a href="https://www.tiktok.com/@finishmystatisticsclass" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">TikTok</a>
+                <a href="https://www.instagram.com/finishmystatisticsclass/" target="_blank" rel="noopener noreferrer" style="color: var(--text-muted); text-decoration: none;">Instagram</a>
+            </div>
+            <p class="copyright">&copy; <span id="year"></span> StatExpert Tutors. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="../../assets/js/script.js"></script>
+</body>
+</html>

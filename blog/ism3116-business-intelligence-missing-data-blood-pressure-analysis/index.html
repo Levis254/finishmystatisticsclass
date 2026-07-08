@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISM3116 Business Intelligence: Missing Data Analysis | StatExpert</title>
+    <meta name="description"
+        content="Struggling with ISM3116 Introduction to Business Intelligence? Learn how to analyze missing blood pressure data, filter in Excel, and understand why mean imputation introduces bias.">
+    <meta name="keywords"
+        content="ISM3116 help, Introduction to Business Intelligence, missing data analysis, blood pressure dataset, Excel AVERAGEIF, mean imputation bias, informative missingness, MCAR, MNAR">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="ISM3116 Business Intelligence: Missing Data & Blood Pressure Analysis Guide">
+    <meta property="og:description"
+        content="A complete walkthrough for ISM3116 students on analyzing missing data, calculating conditional averages in Excel, and interpreting informative vs. random missingness.">
+    <meta property="og:image"
+        content="https://finishmystatisticsclass.com/assets/images/ISM3116G2-106082026%20Introduction%20to%20Business%20Intelligence.png">
+    <meta property="og:url"
+        content="https://finishmystatisticsclass.com/blog/ism3116-business-intelligence-missing-data-blood-pressure-analysis/">
+    <meta property="og:type" content="article">
+
+    <link rel="canonical"
+        href="https://finishmystatisticsclass.com/blog/ism3116-business-intelligence-missing-data-blood-pressure-analysis/">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+
+    <!-- Structured Data (Article Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://finishmystatisticsclass.com/blog/ism3116-business-intelligence-missing-data-blood-pressure-analysis/"
+      },
+      "headline": "ISM3116 Introduction to Business Intelligence: Missing Data and Blood Pressure Analysis",
+      "description": "Learn how to analyze a blood pressure dataset with missing values in Excel, calculate conditional means, and evaluate mean imputation bias for ISM3116 Business Intelligence assignments.",
+      "image": "https://finishmystatisticsclass.com/assets/images/ISM3116G2-106082026%20Introduction%20to%20Business%20Intelligence.png",  
+      "author": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors"
+      },  
+      "publisher": {
+        "@type": "Organization",
+        "name": "StatExpert Tutors",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://finishmystatisticsclass.com/logo.png"
+        },
+        "sameAs": [
+          "https://www.tiktok.com/@finishmystatisticsclass",
+          "https://www.instagram.com/finishmystatisticsclass/"
+        ]
+      },
+      "datePublished": "2026-06-14"
+    }
+    </script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../favicon.png">
+    <link rel="apple-touch-icon" href="../../favicon.png">
+
+    <style>
+        /* Custom Styles for the interactive visualizer */
+        .visualizer-card {
+            background: var(--bg-light);
+            border: 1px solid rgba(14, 165, 233, 0.15);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin: 2.5rem 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .visualizer-title {
+            color: var(--primary-color);
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .visualizer-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .inputs-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .input-item label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .input-item input {
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: #ffffff;
+            transition: var(--transition-fast);
+        }
+
+        .input-item input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
+        }
+
+        .calc-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .calc-btn:hover {
+            background-color: var(--accent-dark);
+            transform: translateY(-1px);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .results-table th {
+            background-color: rgba(14, 165, 233, 0.05);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .results-table tr:hover {
+            background-color: rgba(14, 165, 233, 0.02);
+        }
+
+        .badge-pill {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 50px;
+        }
+
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge-success {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+
+        .badge-danger {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar glass">
+        <div class="container nav-content">
+            <a href="../../" class="brand"><img src="../../assets/images/logo.jpg" alt="StatExpert Logo"
+                    class="brand-logo"><span>Stat</span>Expert</a>
+            <nav class="nav-links" id="nav-links">
+                <a href="../../#services">Services</a>
+                <a href="../../#how-it-works">How It Works</a>
+                <a href="../../#blog">Articles</a>
+                <a href="../../#contact" class="btn btn-secondary">Get Help</a>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+                <div class="hamburger"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Article Header -->
+        <article class="container pd-y-lg mg-t-lg">
+            <div class="article-header text-center">
+                <span class="blog-category"
+                    style="background: rgba(14, 165, 233, 0.1); color: var(--accent-color); padding: 0.25rem 0.75rem; border-radius: 50px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px;">BUSINESS
+                    INTELLIGENCE</span>
+                <h1
+                    style="font-size: clamp(2rem, 4vw, 3rem); margin-top: 1rem; color: var(--primary-color); font-weight: 800; line-height: 1.25;">
+                    ISM3116 Introduction to Business Intelligence: Missing Data and Blood Pressure Analysis</h1>
+                <div class="article-meta" style="margin-top: 1rem; color: var(--text-muted);">
+                    Published on June 14, 2026 • 8 min read
+                </div>
+                <div class="blog-img"
+                    style="background-image: url('../../assets/images/ISM3116G2-106082026%20Introduction%20to%20Business%20Intelligence.png'); border-radius: var(--radius-md); margin-top: 2rem; margin-bottom: 2rem; height: 350px; background-size: cover; background-position: center;">
+                </div>
+            </div>
+
+            <div class="article-content"
+                style="max-width: 800px; margin: 0 auto; line-height: 1.8; color: var(--text-primary);">
+                <p>Students taking <strong>Introduction to Business Intelligence (ISM3116)</strong> frequently face
+                    assignments involving real-world data issues, such as missing entries, conditional formulas, and
+                    statistical interpretation in Microsoft Excel. One classic exercise asks students to analyze a blood
+                    pressure dataset representing 1,000 individuals to determine whether missing values in the dataset
+                    occur randomly or if they contain meaningful, "informative" patterns related to health outcomes.</p>
+
+                <p>Real-world business and health data is rarely clean. Missing values can skew reporting, lead to poor
+                    forecasting, and misinform strategic decision-making. Through this assignment, students learn how to
+                    think critically about data quality and evaluate how statistical adjustments like "mean imputation"
+                    can introduce unintended bias into business reports.</p>
+
+                <div class="callout"
+                    style="background: rgba(14, 165, 233, 0.05); border-left: 4px solid var(--accent-color); padding: 1.5rem; margin: 2rem 0; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+                    <strong>Struggling to clean your Excel sheets or interpret your data patterns in ISM3116?</strong>
+                    <br>Our business intelligence and statistics tutors are ready to help you write formulas, construct
+                    professional dashboards, and write top-tier analysis reports.
+                    <br><a href="../../#contact"
+                        style="color: var(--accent-color); font-weight: 600; text-decoration: underline;">Get a free
+                        custom help quote today!</a>
+                </div>
+
+                <h2>The ISM3116 Blood Pressure Assignment Overview</h2>
+                <p>The assignment typically provides a dataset containing blood pressure measurements and
+                    demographic/lifestyle characteristics for 1,000 subjects. The primary variables include:</p>
+                <ul style="list-style-type: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li><strong>Age:</strong> Age of the participant.</li>
+                    <li><strong>Income:</strong> Household income.</li>
+                    <li><strong>Alcohol Consumption:</strong> Frequency or weekly consumption.</li>
+                    <li><strong>Exercise Habits:</strong> Active hours or category of exercise.</li>
+                    <li><strong>Smoking Status:</strong> Smoker vs. Non-smoker.</li>
+                    <li><strong>Blood Pressure (Systolic/Diastolic):</strong> The primary outcome variable (which
+                        frequently has missing values).</li>
+                </ul>
+
+                <p>Students are asked to divide the dataset into two main groups: <strong>individuals with complete
+                        records</strong> and <strong>individuals with missing values</strong>. By comparing these groups
+                    across the demographic and lifestyle variables, students must determine if the missing data is
+                    random or predictive of underlying health status.</p>
+
+                <figure style="margin: 2rem 0; text-align: center;">
+                    <img src="../../assets/images/ISM3116G2-106082026%20Introduction%20to%20Business%20Intelligence.png"
+                        alt="ISM3116 Introduction to Business Intelligence Missing Data Blood Pressure Analysis"
+                        style="border-radius: var(--radius-md); box-shadow: var(--shadow-md); margin: 0 auto; max-width: 100%; height: auto;">
+                    <figcaption
+                        style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-muted); font-style: italic;">
+                        The ISM3116 assignment tasks students with analyzing 1,000 individuals to detect patterns in
+                        missing data.</figcaption>
+                </figure>
+
+                <h2>Step-by-Step Analytical Process in Excel</h2>
+                <p>To successfully complete the assignment, students must perform a series of descriptive operations.
+                    Below is the standard workflow required to obtain the statistical solutions.</p>
+
+                <h3>1. Isolating and Filtering Missing Values</h3>
+                <p>The first step is classifying records based on whether they contain missing data. In Excel, this is
+                    done by filtering the dataset:</p>
+                <ul style="list-style-type: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li><strong>Using Excel Filters:</strong> Highlight your header row, click <strong>Data >
+                            Filter</strong>. Go to the dropdown arrow of the column containing missing values (e.g.,
+                        Blood Pressure) and check only the <strong>(Blanks)</strong> option. This will isolate the
+                        incomplete records.</li>
+                    <li><strong>Creating an Indicator Column:</strong> Analysts often add a helper column named
+                        <code>IsMissing</code> with the formula:
+                        <pre
+                            style="background: #f4f5f7; padding: 0.75rem; border-radius: 8px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; margin-top: 0.5rem; margin-bottom: 0.5rem;">=IF(ISBLANK(F2), 1, 0)</pre>
+                        Where column <code>F</code> represents the blood pressure values. This indicator can be used in
+                        pivot tables or conditional sums.
+                    </li>
+                </ul>
+
+                <h3>2. Calculating Conditional Means</h3>
+                <p>You need to compare averages across groups (complete vs. missing records). To calculate these
+                    conditional averages without manual sorting, use Excel's <code>AVERAGEIF</code> and
+                    <code>AVERAGEIFS</code> functions:
+                </p>
+                <ul style="list-style-type: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li><strong>Average Income for Complete Data:</strong>
+                        <pre
+                            style="background: #f4f5f7; padding: 0.75rem; border-radius: 8px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; margin-top: 0.5rem;">=AVERAGEIFS(IncomeRange, BloodPressureRange, "<>")</pre>
+                        Here, <code>"<>"</code> tells Excel to only average rows where the blood pressure cell is not
+                        blank.
+                    </li>
+                    <li><strong>Average Income for Missing Data:</strong>
+                        <pre
+                            style="background: #f4f5f7; padding: 0.75rem; border-radius: 8px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; margin-top: 0.5rem;">=AVERAGEIFS(IncomeRange, BloodPressureRange, "=")</pre>
+                        This calculates the mean income only for participants whose blood pressure entries are blank.
+                    </li>
+                </ul>
+
+                <h2>Understanding Informative vs. Random Missingness</h2>
+                <p>A core question in the ISM3116 assignment is: <em>Is the missing data random or informative?</em></p>
+
+                <p>In data science, we classify missing data into three categories:</p>
+                <ol style="list-style-type: decimal; padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li><strong>Missing Completely at Random (MCAR):</strong> The missingness has nothing to do with any
+                        variables in the dataset. For instance, a blood tube broke in the lab, or a questionnaire page
+                        got lost by accident.</li>
+                    <li><strong>Missing at Random (MAR):</strong> The missingness depends on an observed variable but
+                        not the missing value itself. For example, younger people might be less likely to report blood
+                        pressure, but within age brackets, missingness is random.</li>
+                    <li><strong>Missing Not at Random (MNAR / Informative):</strong> The missingness is directly related
+                        to the value that is missing. For example, individuals with very high blood pressure might feel
+                        unwell or self-conscious and choose not to report it.</li>
+                </ol>
+
+                <p>If your Excel calculations show that the <strong>missing-data group</strong> has a significantly
+                    higher average age, higher alcohol consumption, or a higher smoking rate than the
+                    <strong>complete-data group</strong>, the missingness is <strong>informative</strong>. Lifestyle
+                    factors linked to high blood pressure are correlated with non-reporting. Thus, the missing values
+                    are likely hiding higher-than-average blood pressure readings!
+                </p>
+
+                <!-- INTERACTIVE WIDGET: MEAN IMPUTATION BIAS VISUALIZER -->
+                <div class="visualizer-card">
+                    <div class="visualizer-title">
+                        📊 Interactive Tool: Mean Imputation Bias Visualizer
+                    </div>
+                    <p class="visualizer-desc">
+                        Explore how imputing (filling in) missing data with the overall mean changes the variance and
+                        standard deviation of a dataset. When you replace blanks with the average, you artificially
+                        shrink the statistical spread.
+                    </p>
+
+                    <div class="inputs-row">
+                        <div class="input-item">
+                            <label for="val1">Value 1</label>
+                            <input type="number" id="val1" value="100">
+                        </div>
+                        <div class="input-item">
+                            <label for="val2">Value 2</label>
+                            <input type="number" id="val2" value="110">
+                        </div>
+                        <div class="input-item">
+                            <label for="val3">Value 3</label>
+                            <input type="number" id="val3" value="130">
+                        </div>
+                        <div class="input-item">
+                            <label for="val4">Value 4</label>
+                            <input type="number" id="val4" value="140">
+                        </div>
+                        <div class="input-item">
+                            <label style="color: var(--accent-dark);">Value 5 (Missing)</label>
+                            <input type="number" id="val5" value="170" placeholder="e.g., 170">
+                        </div>
+                    </div>
+
+                    <button class="calc-btn" onclick="calculateImputationBias()">Compare Scenarios</button>
+
+                    <div id="results-container" style="display:none;">
+                        <h4>Analysis Results</h4>
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Values Analyzed</th>
+                                    <th>Mean (Average)</th>
+                                    <th>Standard Deviation (Spread)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1. Complete Cases Only</strong><br><small>Ignore the missing
+                                            value</small></td>
+                                    <td><span id="cc-vals">100, 110, 130, 140</span></td>
+                                    <td><span id="cc-mean">120.0</span></td>
+                                    <td><span id="cc-sd">18.26</span></td>
+                                    <td><span class="badge-pill badge-success">Unbiased Variance</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2. Mean Imputation</strong><br><small>Fill blank with Complete Case
+                                            Mean</small></td>
+                                    <td><span id="mi-vals">100, 110, 130, 140, 120</span></td>
+                                    <td><span id="mi-mean">120.0</span></td>
+                                    <td><span id="mi-sd">15.81</span></td>
+                                    <td><span class="badge-pill badge-warning">Artificially Lowered SD (-13%)</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3. True Value (If Informative)</strong><br><small>What actually
+                                            happened</small></td>
+                                    <td><span id="tv-vals">100, 110, 130, 140, 170</span></td>
+                                    <td><span id="tv-mean">130.0</span></td>
+                                    <td><span id="tv-sd">27.39</span></td>
+                                    <td><span class="badge-pill badge-danger">Imputation Underestimated Mean & SD</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div
+                            style="margin-top: 1rem; padding: 1rem; background: #fff; border-left: 4px solid var(--accent-color); border-radius: var(--radius-sm); font-size: 0.9rem;">
+                            <strong>Analytical Insight:</strong> Notice how <strong>Mean Imputation (Row 2)</strong>
+                            keeps the mean at <span id="insight-mean">120</span> but shrinks the Standard Deviation from
+                            <span id="insight-cc-sd">18.26</span> to <span id="insight-mi-sd">15.81</span>. Furthermore,
+                            if the missing value was actually high (<span id="insight-tv-val">170</span>) due to
+                            informative non-response, mean imputation understates the true health risks of the
+                            population (Row 3)!
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Why Mean Imputation is Inappropriate</h2>
+                <p>Mean Imputation is the practice of replacing missing values in a column with the mean of the observed
+                    values. While it is easy to execute in Excel, business intelligence instructors look for a strong
+                    critical evaluation of this method:</p>
+                <ul style="list-style-type: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li><strong>Artificially Reduces Variance:</strong> By adding multiple data points exactly at the
+                        mean, you make the dataset appear more consistent than it is. It artificially squeezes standard
+                        deviation, which distorts risk calculations.</li>
+                    <li><strong>Introduces Severe Bias:</strong> If the data is Missing Not at Random (informative), the
+                        true mean is different from the observed mean. Imputing the observed mean locks in a biased
+                        average.</li>
+                    <li><strong>Understates Standard Errors:</strong> Statistical testing packages assume all input
+                        numbers are real observations. Fabricating data points makes sample sizes look larger and
+                        margins of error look smaller, leading to false statistical confidence.</li>
+                </ul>
+
+                <h2>Business and Analytical Implications</h2>
+                <p>In business intelligence, recognizing data missingness patterns is critical. Consider these corporate
+                    scenarios:</p>
+                <ul style="list-style-type: none; padding-left: 0; margin-bottom: 1.5rem;">
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;"><span
+                            style="position: absolute; left: 0; color: var(--accent-color); font-weight: bold;">→</span>
+                        <strong>Customer Satisfaction Surveys:</strong> If customers with poor experiences chose not to
+                        complete surveys, ignoring missing data will lead to an artificially inflated Net Promoter Score
+                        (NPS).
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;"><span
+                            style="position: absolute; left: 0; color: var(--accent-color); font-weight: bold;">→</span>
+                        <strong>Credit Scoring and Risk:</strong> If borrowers with high debt levels omit income
+                        disclosures, treating their missing values as average will lead to underestimating loan default
+                        rates.
+                    </li>
+                </ul>
+
+                <h2>Access the Complete Statistical Solution</h2>
+                <p>For a detailed breakdown of the calculations and methodologies used in this analysis, you can explore
+                    the complete walkthrough and analytical repository:</p>
+                <p style="text-align: center; margin: 1.5rem 0;">
+                    <a href="https://github.com/Levis254/Missing-Data" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-outline" style="border-radius: 50px; font-weight: 600;">
+                        📂 Visit the Missing Data Analysis GitHub Repository
+                    </a>
+                </p>
+
+                <h2>Need Help with Your ISM3116 Assignments?</h2>
+                <p>If you're studying business analytics, descriptive statistics, or dashboard design and are struggling
+                    to apply these techniques, we can help. Our expert tutors regularly support students taking ISM3116
+                    and other business intelligence courses.</p>
+                <p>Whether you need help with:</p>
+                <ul style="list-style-type: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                    <li>Conditional averaging and complex filtering formulas in Excel.</li>
+                    <li>Structuring professional reports with clean statistical formatting.</li>
+                    <li>Creating dynamic dashboards and charts that stand out.</li>
+                    <li>Understanding predictive analytics, logistic regressions, or clustering.</li>
+                </ul>
+                <p>Fill out the contact form below or reach out to us on WhatsApp, and we will get back to you with a
+                    transparent quote to complete your assignment or explain the concepts step-by-step.</p>
+
+                <div class="callout"
+                    style="background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--success); padding: 1.5rem; margin: 2.5rem 0; border-radius: var(--radius-sm);">
+                    <h3 style="color: var(--primary-color); margin-top: 0; font-size: 1.25rem;">Excel in Business
+                        Intelligence</h3>
+                    <p style="margin-bottom: 1rem;">Let us help you clear the confusion around Excel formulas, missing
+                        data concepts, and statistical interpretations. Get the grade you want with personalized
+                        tutoring and professional support.</p>
+                    <a href="../../#contact" class="btn btn-primary">Get Custom Assignment Help</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center">
+        <div class="container">
+            <div class="footer-links">
+                <a href="../../">Home</a>
+                <a href="../../#services">Services</a>
+                <a href="../../#blog">Blog</a>
+                <a href="../../#contact">Contact</a>
+                <a href="../../sitemap.xml">Sitemap</a>
+            </div>
+            <div class="social-links mg-t"
+                style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                <a href="https://www.tiktok.com/@finishmystatisticsclass" target="_blank" rel="noopener noreferrer"
+                    style="color: var(--text-muted); text-decoration: none;">TikTok</a>
+                <a href="https://www.instagram.com/finishmystatisticsclass/" target="_blank" rel="noopener noreferrer"
+                    style="color: var(--text-muted); text-decoration: none;">Instagram</a>
+            </div>
+            <p class="copyright">&copy; <span id="year"></span> StatExpert Tutors. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="../../assets/js/script.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Calculate and compare complete case, mean imputation, and informative scenarios
+        function calculateImputationBias() {
+            const val1 = parseFloat(document.getElementById('val1').value);
+            const val2 = parseFloat(document.getElementById('val2').value);
+            const val3 = parseFloat(document.getElementById('val3').value);
+            const val4 = parseFloat(document.getElementById('val4').value);
+            const val5 = parseFloat(document.getElementById('val5').value) || 0;
+
+            const completeCases = [val1, val2, val3, val4];
+
+            // Calculate Complete Cases Stats
+            const ccMean = completeCases.reduce((a, b) => a + b, 0) / completeCases.length;
+            const ccVariance = completeCases.reduce((acc, val) => acc + Math.pow(val - ccMean, 2), 0) / (completeCases.length - 1);
+            const ccSd = Math.sqrt(ccVariance);
+
+            // Calculate Mean Imputation Stats (N=5, 5th value is ccMean)
+            const miCases = [...completeCases, ccMean];
+            const miMean = miCases.reduce((a, b) => a + b, 0) / miCases.length;
+            // Sample variance formula divided by (n-1) = 4
+            const miVariance = miCases.reduce((acc, val) => acc + Math.pow(val - miMean, 2), 0) / (miCases.length - 1);
+            const miSd = Math.sqrt(miVariance);
+
+            // Calculate True Values Stats (N=5, 5th value is actual informative value)
+            const tvCases = [...completeCases, val5];
+            const tvMean = tvCases.reduce((a, b) => a + b, 0) / tvCases.length;
+            const tvVariance = tvCases.reduce((acc, val) => acc + Math.pow(val - tvMean, 2), 0) / (tvCases.length - 1);
+            const tvSd = Math.sqrt(tvVariance);
+
+            // Update UI elements
+            document.getElementById('cc-vals').textContent = completeCases.join(', ');
+            document.getElementById('cc-mean').textContent = ccMean.toFixed(2);
+            document.getElementById('cc-sd').textContent = ccSd.toFixed(2);
+
+            document.getElementById('mi-vals').textContent = miCases.map(v => v.toFixed(1)).join(', ');
+            document.getElementById('mi-mean').textContent = miMean.toFixed(2);
+            document.getElementById('mi-sd').textContent = miSd.toFixed(2);
+
+            const sdReductionPercent = ((ccSd - miSd) / ccSd * 100).toFixed(0);
+            document.querySelector('.badge-warning').textContent = `Artificially Lowered SD (-${sdReductionPercent}%)`;
+
+            document.getElementById('tv-vals').textContent = tvCases.join(', ');
+            document.getElementById('tv-mean').textContent = tvMean.toFixed(2);
+            document.getElementById('tv-sd').textContent = tvSd.toFixed(2);
+
+            // Update text summary
+            document.getElementById('insight-mean').textContent = ccMean.toFixed(2);
+            document.getElementById('insight-cc-sd').textContent = ccSd.toFixed(2);
+            document.getElementById('insight-mi-sd').textContent = miSd.toFixed(2);
+            document.getElementById('insight-tv-val').textContent = val5.toString();
+
+            // Display results container
+            document.getElementById('results-container').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
